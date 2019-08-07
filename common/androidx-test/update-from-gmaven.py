@@ -18,12 +18,12 @@ import os
 import subprocess
 import sys
 
-runnerVersion="1.2.0-alpha03"
-rulesVersion="1.2.0-alpha03"
-espressoVersion="3.2.0-alpha03"
-coreVersion="1.2.0-alpha03"
-extJUnitVersion="1.1.1-alpha03"
-extTruthVersion="1.2.0-alpha03"
+runnerVersion="1.2.0-beta01"
+rulesVersion="1.2.0-beta01"
+espressoVersion="3.2.0-beta01"
+coreVersion="1.2.0-beta01"
+extJUnitVersion="1.1.1-beta01"
+extTruthVersion="1.2.0-beta01"
 jankTestHelperVersion="1.0.1"
 uiAutomatorVersion="2.2.0"
 
@@ -33,6 +33,11 @@ mavenToBpPatternMap = {
     "androidx.test.espresso:espresso-":"androidx.test.espresso.",
     "androidx.test.janktesthelper:janktesthelper":"androidx.test.janktesthelper",
     "androidx.test.uiautomator:uiautomator":"androidx.test.uiautomator",
+    }
+
+extraLibs = {
+    "androidx.test.rules" : "android.test.base",
+    "androidx.test.uiautomator" : "android.test.base",
     }
 
 def cmd(args):
@@ -107,6 +112,8 @@ downloadArtifact("androidx.test.uiautomator", "uiautomator", uiAutomatorVersion)
 atxRewriteStr = ""
 for name in mavenToBpPatternMap:
   atxRewriteStr += "-rewrite %s=%s " % (name, mavenToBpPatternMap[name])
+for name in extraLibs:
+  atxRewriteStr += "-extra-libs %s=%s " % (name, extraLibs[name])
 
 cmd("pom2bp " + atxRewriteStr +
     # map external maven dependencies to Android module names
@@ -123,4 +130,5 @@ cmd("pom2bp " + atxRewriteStr +
     "-rewrite androidx.core:core=androidx.core_core " +
     "-rewrite androidx.legacy:legacy-support-core-utils=androidx.legacy_legacy-support-core-utils " +
     "-sdk-version current " +
+    "-static-deps " +
     ". > Android.bp")
