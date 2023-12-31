@@ -13,8 +13,6 @@ license {
 cc_prebuilt_library_shared {
     name: "libprotobuf-cpp-full-3.9.1-vendorcompat",
     stem: "libprotobuf-cpp-full-3.9.1",
-    // (b/260104292) disabled due to duplicate build rules
-    enabled: false,
     vendor: true,
     target: {
         android_arm64: {
